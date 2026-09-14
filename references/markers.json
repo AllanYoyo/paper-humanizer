@@ -1,0 +1,24 @@
+{
+  "schema_version": "1.0",
+  "description": "Machine-readable AI-style marker dictionaries used by deterministic stats (Layer 2). Human-facing documentation lives in references/style-markers-zh.md and style-markers-en.md.",
+  "zh": {
+    "template_phrases": [
+      "值得注意的是", "需要注意的是", "值得一提的是", "综上所述", "总而言之",
+      "众所周知", "毋庸置疑", "不可否认", "一方面", "另一方面", "具体而言",
+      "换句话说", "与此同时"
+    ],
+    "chain_markers": ["首先", "其次", "再次", "最后"],
+    "connectives": ["此外", "同时", "因此", "然而", "总之", "另外", "由此可见", "相比之下", "但是", "并且"],
+    "banned_register": ["说白了", "其实呢", "咱们"]
+  },
+  "en": {
+    "template_phrases": [
+      "it is worth noting that", "it is important to note that", "it should be noted that",
+      "delve into", "in conclusion", "in summary", "moreover", "furthermore",
+      "additionally", "notably", "importantly", "overall", "plays a crucial role"
+    ],
+    "chain_markers": ["first", "second", "third", "finally"],
+    "connectives": ["however", "moreover", "furthermore", "additionally", "therefore", "thus", "nevertheless", "overall", "in addition", "consequently"],
+    "banned_register": ["gonna", "kind of", "a bit of"]
+  }
+}

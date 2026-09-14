@@ -1,0 +1,17 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "paper-humanizer case metadata (case.json)",
+  "type": "object",
+  "required": ["case_id", "language", "section", "variant", "study", "status"],
+  "properties": {
+    "case_id": { "type": "string", "pattern": "^(zh|en)-(abstract|intro|related|methods|results|discussion|conclusion)-(A|B|C)$" },
+    "language": { "enum": ["zh", "en"] },
+    "section": { "enum": ["abstract", "intro", "related", "methods", "results", "discussion", "conclusion"] },
+    "variant": { "enum": ["A", "B", "C"], "description": "A=明显机器化, B=普通AI生成, C=自然人类文本（守恒对照）" },
+    "study": { "type": "string", "description": "共享故事线 id，v0 固定 DEPLOY-2024" },
+    "author_profile": { "oneOf": [{ "type": "string" }, { "type": "null" }], "description": "authors/ 下的画像路径或 null" },
+    "status": { "enum": ["draft", "authored", "audited"] },
+    "design_ref": { "type": "string" }
+  },
+  "additionalProperties": false
+}

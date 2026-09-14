@@ -1,0 +1,135 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "paper-humanizer case expectations (expected.json)",
+  "type": "object",
+  "required": ["case_id", "expected_changes", "must_preserve", "anti_patterns", "evaluation_criteria"],
+  "properties": {
+    "case_id": { "type": "string" },
+    "expected_changes": {
+      "type": "object",
+      "required": ["summary"],
+      "properties": {
+        "summary": { "type": "string" },
+        "template_density": {
+          "type": "object",
+          "properties": {
+            "max_after_per_1k": { "type": "number", "minimum": 0 },
+            "min_reduction": { "type": "number", "minimum": 0, "maximum": 1 }
+          }
+        },
+        "sentence_cv": { "type": "object", "properties": { "min_delta": { "type": "number" } } },
+        "edit_distance_band": { "type": "array", "items": { "type": "number", "minimum": 0, "maximum": 1 }, "minItems": 2, "maxItems": 2 },
+        "must_rewrite": { "type": "array", "items": { "type": "string" } },
+        "naturalness": {
+          "type": "object",
+          "properties": {
+            "min_after": { "type": "number", "minimum": 1, "maximum": 5 },
+            "min_delta": { "type": "number" },
+            "delta_abs_max": { "type": "number" }
+          }
+        }
+      }
+    },
+    "must_preserve": {
+      "type": "object",
+      "required": ["atoms"],
+      "properties": {
+        "atoms": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["id", "type", "surface", "canonical"],
+            "properties": {
+              "id": { "type": "string", "pattern": "^a[0-9]{2,}$" },
+              "type": { "enum": ["number", "percent", "amount", "date", "range", "count", "p_value", "coefficient", "variable", "citation", "doi", "url", "term", "source", "condition", "measure"] },
+              "surface": { "type": "string" },
+              "canonical": { "type": "string" },
+              "equivalence": { "type": "array", "items": { "type": "string" }, "description": "允许的等价形；等价通道只对这些放行" },
+              "context": { "type": "string" }
+            }
+          }
+        },
+        "terms": { "type": "array", "items": { "type": "string" } },
+        "citations": {
+          "type": "object",
+          "properties": {
+            "numbered": { "type": "array", "items": { "type": "string" } },
+            "author_year": { "type": "array", "items": { "type": "string" } },
+            "require_same_count": { "type": "boolean" }
+          }
+        },
+        "claims": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["id", "kind", "strength", "text"],
+            "properties": {
+              "id": { "type": "string", "pattern": "^c[0-9]+$" },
+              "kind": { "enum": ["finding", "conclusion", "causal", "attribution", "stance"] },
+              "strength": { "enum": ["strong", "moderate", "hedged", "neutral"] },
+              "text": { "type": "string" },
+              "atoms": { "type": "array", "items": { "type": "string" } }
+            }
+          }
+        },
+        "frozen_regions": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["id", "kind", "check"],
+            "properties": {
+              "id": { "type": "string" },
+              "kind": { "enum": ["table", "equation", "code", "references", "figure_caption"] },
+              "locator": { "type": "string" },
+              "check": { "enum": ["cell_value_sequence", "raw_hash"] }
+            }
+          }
+        },
+        "structure": {
+          "type": "object",
+          "properties": {
+            "headings": { "type": "array", "items": { "type": "string" } },
+            "heading_change": { "enum": ["forbidden", "allowed"] },
+            "paragraphs": { "type": "integer", "minimum": 1 },
+            "paragraph_tolerance": { "type": "integer", "minimum": 0 }
+          }
+        }
+      }
+    },
+    "anti_patterns": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["kind", "items"],
+        "properties": {
+          "kind": { "enum": ["banned_phrase", "banned_chain", "phrase_repetition", "forbidden_behavior"] },
+          "items": { "type": "array", "items": { "type": "string" } },
+          "max_count": { "type": "integer", "minimum": 0 }
+        }
+      }
+    },
+    "evaluation_criteria": {
+      "type": "object",
+      "required": ["dimensions"],
+      "properties": {
+        "dimensions": {
+          "type": "array",
+          "items": { "enum": ["semantic_fidelity", "factual_fidelity", "citation_fidelity", "structural_fidelity", "naturalness", "academic_style", "author_style"] }
+        },
+        "hard_fail_overrides": {
+          "type": "array",
+          "description": "对 gates.json hard_fail_rules 的 case 级覆写；只允许加严，放宽须在 notes.md 说明",
+          "items": { "type": "object", "required": ["rule", "change"], "properties": { "rule": { "type": "string" }, "change": { "type": "string" } } }
+        },
+        "thresholds_ref": { "type": "string", "description": "指向 gates.json 的变体阈值，如 ../gates.json#variant_thresholds.A" },
+        "judge": {
+          "type": "object",
+          "properties": {
+            "double_side_scoring": { "type": "boolean" },
+            "claims_ledger": { "type": "string" }
+          }
+        }
+      }
+    }
+  }
+}

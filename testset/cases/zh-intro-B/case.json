@@ -1,0 +1,10 @@
+{
+  "case_id": "zh-intro-B",
+  "language": "zh",
+  "section": "intro",
+  "variant": "B",
+  "study": "DEPLOY-2024",
+  "author_profile": null,
+  "status": "draft",
+  "design_ref": "../CASES.md#zh-intro-B"
+}

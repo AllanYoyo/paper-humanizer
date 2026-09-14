@@ -1,0 +1,19 @@
+{"id":"M01","op":"digit_transpose","base":"zh-results-A","target_atom":"a02","from":"327","to":"237","expect":"fail","rule":"atom_changed"}
+{"id":"M02","op":"digit_drop","base":"zh-results-A","target_atom":"a09","from":"0.42","to":"0.4","expect":"fail","rule":"atom_changed"}
+{"id":"M03","op":"decimal_shift","base":"zh-results-A","target_atom":"a09","from":"0.42","to":"0.042","expect":"fail","rule":"atom_changed"}
+{"id":"M04","op":"unit_swap","base":"zh-results-A","target_atom":"a11","from":"34.5%","to":"3.45%","expect":"fail","rule":"atom_changed"}
+{"id":"M05","op":"range_shrink","base":"zh-results-A","target_atom":"a01","from":"2020—2024年","to":"2020—2023年","expect":"fail","rule":"atom_changed"}
+{"id":"M06","op":"citation_drop","base":"zh-results-A","target_atom":"a15","from":"[12]","to":"","expect":"fail","rule":"citation_lost"}
+{"id":"M07","op":"citation_renumber","base":"zh-results-A","target_atom":"a15","from":"[12]","to":"[13]","expect":"fail","rule":"atom_changed"}
+{"id":"M08","op":"citation_add","base":"zh-results-A","add":"（参见李慧，2022）","expect":"fail","rule":"citation_added"}
+{"id":"M09","op":"doi_change","base":"zh-results-A","target_atom":"a16","from":"10.0000/demo.2023.041","to":"10.0000/demo.2023.042","expect":"fail","rule":"doi_url_changed"}
+{"id":"M10","op":"url_change","base":"zh-results-A","target_atom":"a17","from":"deploy-2024","to":"deploy-2025","expect":"fail","rule":"doi_url_changed"}
+{"id":"M11","op":"term_synonym","base":"zh-results-A","target_atom":"terms:供应网络多元化","from":"供应网络多元化","to":"网络多元化布局","expect":"fail","rule":"term_drift"}
+{"id":"M12","op":"claim_strengthen","base":"zh-results-A","target_atom":"c4","from":"与Chen & Zhao（2023）基于跨国数据的发现相一致","to":"证实了Chen & Zhao（2023）的因果结论","expect":"fail","rule":"claim_strength_shift"}
+{"id":"M13","op":"claim_weaken","base":"zh-results-A","target_atom":"c1","from":"显著提升了供应链韧性","to":"或在一定程度上与供应链韧性改善有关","expect":"fail","rule":"claim_strength_shift"}
+{"id":"M14","op":"number_add","base":"zh-results-A","add":"问卷覆盖率达89.2%","expect":"fail","rule":"new_data_atom"}
+{"id":"M15","op":"attribution_swap","base":"zh-related-A","description":"交换 [8] Smith 与 [11] 李慧 两句的发现归属","expect":"fail","rule":"citation_rebound"}
+{"id":"N01","op":"percent_to_decimal","base":"zh-results-A","target_atom":"a11","from":"34.5%","to":"0.345","expect":"pass"}
+{"id":"N02","op":"currency_rescale","base":"zh-results-A","target_atom":"a04","from":"286.4万元","to":"2,864,000元","expect":"pass"}
+{"id":"N03","op":"dash_variant","base":"zh-results-A","target_atom":"a01","from":"2020—2024年","to":"2020至2024年","expect":"pass"}
+{"id":"N04","op":"p_case_variant","base":"zh-results-A","target_atom":"a09","from":"p<0.01","to":"P<0.01","expect":"pass"}

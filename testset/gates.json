@@ -1,0 +1,66 @@
+{
+  "schema_version": "1.0",
+  "description": "paper-humanizer 评测门禁注册表。规则 id 与 docs/EVALUATION.md §3 一一对应；case 可在 expected.json 中加严，放宽须在 notes.md 说明理由。",
+  "hard_fail_rules": [
+    { "id": "atom_changed", "severity": "hard", "detector": "layer2", "applies_to": ["A", "B", "C"], "definition": "must_preserve 原子的 canonical 值与改写后不一致" },
+    { "id": "atom_missing", "severity": "hard", "detector": "layer2", "applies_to": ["A", "B", "C"], "definition": "原子在输出中消失" },
+    { "id": "new_data_atom", "severity": "hard", "detector": "layer2", "applies_to": ["A", "B", "C"], "definition": "输出出现输入中不存在的数值/事实原子" },
+    { "id": "citation_lost", "severity": "hard", "detector": "layer2", "applies_to": ["A", "B", "C"], "definition": "引用注册表集合缩小" },
+    { "id": "citation_added", "severity": "hard", "detector": "layer2", "applies_to": ["A", "B", "C"], "definition": "输入中不存在的新文献" },
+    { "id": "citation_rebound", "severity": "hard", "detector": "layer2+judge", "applies_to": ["A", "B", "C"], "definition": "引用-论断绑定改变或归属调换" },
+    { "id": "doi_url_changed", "severity": "hard", "detector": "layer2", "applies_to": ["A", "B", "C"], "definition": "DOI/URL 任何字符级变化" },
+    { "id": "claim_contradicted", "severity": "hard", "detector": "judge", "applies_to": ["A", "B", "C"], "definition": "注册命题被改写为矛盾命题" },
+    { "id": "claim_dropped", "severity": "hard", "detector": "judge+bookkeeping", "applies_to": ["A", "B", "C"], "definition": "注册命题在输出中无对应蕴含" },
+    { "id": "claim_strength_shift", "severity": "hard", "detector": "judge+bookkeeping", "applies_to": ["A", "B", "C"], "definition": "claim 强度档位变化（strong/moderate/hedged）" },
+    { "id": "new_claim_added", "severity": "hard", "detector": "judge", "applies_to": ["A", "B", "C"], "definition": "输出出现输入中不存在的新论断" },
+    { "id": "frozen_region_modified", "severity": "hard", "detector": "layer2", "applies_to": ["A", "B", "C"], "definition": "表格/公式/代码/参考文献表指纹变化" },
+    { "id": "structure_broken", "severity": "hard", "detector": "layer2", "applies_to": ["A", "B", "C"], "definition": "标题/节丢失、节序错乱、段落超出容差" },
+    { "id": "over_edit", "severity": "hard", "detector": "layer2", "applies_to": ["C"], "definition": "编辑距离超出 C 类守恒用例上限带" },
+    { "id": "term_drift", "severity": "hard", "detector": "layer2", "applies_to": ["A", "B", "C"], "definition": "注册术语漂移为未登记同义形" }
+  ],
+  "soft_rules": [
+    { "id": "atom_moved_cross_paragraph", "definition": "原子跨段移动（同节内），记录不拦截" },
+    { "id": "numeric_added_warning", "definition": "非 must_preserve 且非事实性的数字出现，记录供人审" },
+    { "id": "rhythm_residual", "definition": "句长 CV / 段长方差未达门槛" }
+  ],
+  "variant_thresholds": {
+    "A": {
+      "template_density_max_per_1k": 2.0,
+      "template_density_min_reduction": 0.5,
+      "sentence_cv_min_delta": 0.10,
+      "edit_distance_band": [0.15, 0.65],
+      "naturalness_min": 4.0,
+      "naturalness_min_delta": 1.0
+    },
+    "B": {
+      "template_density_max_per_1k": 3.0,
+      "template_density_min_reduction": 0.3,
+      "sentence_cv_min_delta": 0.05,
+      "edit_distance_band": [0.10, 0.55],
+      "naturalness_min": 3.5,
+      "naturalness_min_delta": 0.5
+    },
+    "C": {
+      "template_density_max_delta": 0,
+      "sentence_cv_min_delta": -0.10,
+      "edit_distance_band": [0.0, 0.15],
+      "naturalness_delta_abs_max": 0.5
+    }
+  },
+  "fidelity_floor": {
+    "all_variants": "hard_fail == 0 且 semantic_fidelity_score == 1.0（地板合成 min）"
+  },
+  "set_level_checks": [
+    { "id": "dose_response_edit", "assertion": "mean_edit_distance(A) > mean_edit_distance(B) > mean_edit_distance(C)" },
+    { "id": "dose_response_naturalness", "assertion": "naturalness_delta(A) >= naturalness_delta(B) > naturalness_delta(C)" },
+    { "id": "detector_coverage", "assertion": "每条 hard_fail 规则至少被 1 个 selftest 正例命中，覆盖率必须 100%" },
+    { "id": "equivalence_no_false_positive", "assertion": "selftest 负例全部通过" }
+  ],
+  "judge_config": {
+    "double_side_scoring": true,
+    "input_isolation": "judge 只见原文、改写文与 claims 账本，不见重写指令",
+    "rubric_version": "review-rubric v0（references/review-rubric.md）",
+    "sample_audit_rate": 0.1
+  },
+  "exit_codes": { "0": "全部通过", "1": "存在门禁失败", "2": "输入/内部错误" }
+}

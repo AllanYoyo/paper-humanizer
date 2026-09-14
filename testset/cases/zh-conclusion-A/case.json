@@ -1,0 +1,10 @@
+{
+  "case_id": "zh-conclusion-A",
+  "language": "zh",
+  "section": "conclusion",
+  "variant": "A",
+  "study": "DEPLOY-2024",
+  "author_profile": null,
+  "status": "draft",
+  "design_ref": "../CASES.md#zh-conclusion-A"
+}

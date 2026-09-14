@@ -1,0 +1,93 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "paper-humanizer per-case evaluation result",
+  "type": "object",
+  "required": ["case_id", "verdict", "scores", "hard_failures"],
+  "properties": {
+    "case_id": { "type": "string" },
+    "input_sha256": { "type": "string" },
+    "output_path": { "type": "string" },
+    "pipeline_meta": {
+      "type": "object",
+      "description": "被测流水线的标识与版本（skill 版本 / prompt 版本 / 模型标识），保证可复现"
+    },
+    "atoms": {
+      "type": "array",
+      "description": "原子账本逐条 verdict",
+      "items": {
+        "type": "object",
+        "required": ["atom_id", "verdict"],
+        "properties": {
+          "atom_id": { "type": "string" },
+          "verdict": { "enum": ["preserved", "equivalent", "moved", "changed", "missing", "added"] },
+          "evidence": {
+            "type": "object",
+            "properties": {
+              "quote_before": { "type": "string" },
+              "quote_after": { "type": "string" }
+            }
+          }
+        }
+      }
+    },
+    "claims": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["claim_id", "verdict"],
+        "properties": {
+          "claim_id": { "type": "string" },
+          "verdict": { "enum": ["entailed", "weakened", "strengthened", "contradicted", "dropped", "added_new"] },
+          "evidence": { "type": "string" },
+          "note": { "type": "string" }
+        }
+      }
+    },
+    "metrics": {
+      "type": "object",
+      "properties": {
+        "before": { "type": "object" },
+        "after": { "type": "object" },
+        "edit_distance": { "type": "number", "minimum": 0, "maximum": 1 }
+      }
+    },
+    "judge": { "type": ["object", "null"], "description": "judge 评分（naturalness/academic 两侧分与 delta）；无 judge 时为 null" },
+    "anti_pattern_hits": {
+      "type": "array",
+      "items": { "type": "object", "properties": { "kind": { "type": "string" }, "item": { "type": "string" }, "count": { "type": "integer" } } }
+    },
+    "scores": {
+      "type": "object",
+      "required": ["semantic_fidelity_score", "naturalness_score", "academic_score"],
+      "properties": {
+        "semantic_fidelity_score": { "type": ["number", "null"], "minimum": 0, "maximum": 1, "description": "地板合成 min(claim, atom, citation, structure)；hard-fail 时为 0" },
+        "subscores": {
+          "type": "object",
+          "description": "claim_entail_rate / atom_preserve_rate / citation_score / structure_score，全部随报告保留",
+          "properties": {
+            "claim_entail_rate": { "type": "number" },
+            "atom_preserve_rate": { "type": "number" },
+            "citation_score": { "type": "number" },
+            "structure_score": { "type": "number" }
+          }
+        },
+        "naturalness_score": { "type": ["number", "null"], "minimum": 1, "maximum": 5 },
+        "academic_score": { "type": ["number", "null"], "minimum": 1, "maximum": 5 },
+        "style_score": { "type": ["number", "null"], "minimum": 0, "maximum": 1, "description": "无作者画像时 null（N/A）" }
+      }
+    },
+    "hard_failures": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["rule", "detail"],
+        "properties": {
+          "rule": { "type": "string", "description": "gates.json 中的规则 id" },
+          "detail": { "type": "string" },
+          "evidence": { "type": "object", "properties": { "quote_before": { "type": "string" }, "quote_after": { "type": "string" } } }
+        }
+      }
+    },
+    "verdict": { "enum": ["pass", "pass_with_notes", "fail"] }
+  }
+}

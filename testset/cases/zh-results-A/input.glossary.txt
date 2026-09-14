@@ -1,0 +1,7 @@
+# zh-results-A 关键术语（与 expected.json must_preserve.terms 一致）
+数字化转型
+供应链韧性
+供应网络多元化
+中介效应
+DTI
+SCR

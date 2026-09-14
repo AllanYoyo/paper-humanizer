@@ -1,0 +1,41 @@
+import sys
+from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
+
+import pytest
+
+from paper_humanizer.lock import build_lock
+from paper_humanizer.normalize import normalize_document
+
+SAMPLE_ZH = """## 4 实证结果
+
+### 4.1 描述性统计
+
+2020—2024年共调查了327家企业，其中183家完成了两期追踪调查。值得注意的是，样本企业的数字化投入均值为286.4万元。首先，从表1可以看出，数字化转型指数DTI的均值为56.8，供应链韧性SCR的平均得分为3.42。其次，企业规模的均值为5.87。最后，企业年龄的均值为18.6年。
+
+### 4.2 基准回归与稳健性检验
+
+从表1可以看出，在控制了企业规模、企业年龄和行业固定效应之后，数字化转型对供应链韧性的回归系数为β=0.42（p<0.01），模型R²为0.61。这一结果表明数字化转型显著提升了供应链韧性。进一步的，本文进行了机制检验。检验结果表明，供应网络多元化在数字化转型影响供应链韧性的过程中发挥了部分中介作用，中介效应占总效应的比例为34.5%。值得注意的是，这一结果与Chen & Zhao（2023）[12]基于跨国数据的发现相一致（DOI: 10.0000/demo.2023.041）。此外，在稳健性检验方面，首先，替换供应链韧性测度后，回归系数为0.38（p<0.05）；其次，控制变量企业年龄的系数为-0.02，且在1%水平上显著；最后，剔除疫情严重省份后，子样本（n=152）的回归结果依然稳健。综上所述，本文的假设H1与H2均得到了数据支持。相关数据与代码见https://example.org/deploy-2024/data。
+
+表1 基准回归结果（节选）
+
+| 变量 | 模型(1) SCR | 模型(2) SCR |
+|------|------------|------------|
+| DTI | 0.42*** | 0.38** |
+| 企业规模 | 0.11 | 0.09 |
+| 企业年龄 | -0.02 | -0.03 |
+| N | 312 | 152 |
+"""
+
+GLOSSARY = ["供应网络多元化", "数字化转型", "供应链韧性"]
+
+
+@pytest.fixture
+def sample_zh():
+    return normalize_document(SAMPLE_ZH)
+
+
+@pytest.fixture
+def sample_lock(sample_zh):
+    return build_lock(sample_zh, source="sample.md", glossary=list(GLOSSARY))

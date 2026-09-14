@@ -1,0 +1,73 @@
+{
+  "case_id": "zh-results-A",
+  "expected_changes": {
+    "summary": "清除模板短语与机械衔接，打散句长均匀性；允许合并/拆分句子与段内重排；禁止合并 4.1/4.2 两小节；表格与数字不得有任何漂移",
+    "template_density": { "max_after_per_1k": 2.0, "min_reduction": 0.5 },
+    "sentence_cv": { "min_delta": 0.10 },
+    "edit_distance_band": [0.15, 0.60],
+    "must_rewrite": [
+      "值得注意的 ×2",
+      "首先/其次/最后 链 ×2（4.1 与 4.2 各一处）",
+      "从表1可以看出 ×2（至多保留 1 处）",
+      "综上所述",
+      "进一步的（误用，应作「进一步」）"
+    ],
+    "naturalness": { "min_after": 4.0, "min_delta": 1.0 }
+  },
+  "must_preserve": {
+    "atoms": [
+      { "id": "a01", "type": "range", "surface": "2020—2024年", "canonical": "RANGE(2020,2024)", "equivalence": ["2020至2024年"], "context": "2020—2024年共调查了327家企业" },
+      { "id": "a02", "type": "count", "surface": "327家企业", "canonical": "COUNT(327,企业)", "context": "2020—2024年共调查了327家企业" },
+      { "id": "a03", "type": "count", "surface": "183家", "canonical": "COUNT(183,完成两期追踪)", "context": "其中183家完成了两期追踪调查" },
+      { "id": "a04", "type": "amount", "surface": "286.4万元", "canonical": "CNY(2864000)", "equivalence": ["2,864,000元"], "context": "数字化投入均值为286.4万元" },
+      { "id": "a05", "type": "measure", "surface": "DTI的均值为56.8", "canonical": "MEAN(DTI,56.8)", "context": "数字化转型指数DTI的均值为56.8" },
+      { "id": "a06", "type": "measure", "surface": "SCR的平均得分为3.42", "canonical": "MEAN(SCR,3.42)", "context": "供应链韧性SCR的平均得分为3.42" },
+      { "id": "a07", "type": "measure", "surface": "企业规模的均值为5.87", "canonical": "MEAN(lnL,5.87)", "context": "企业规模的均值为5.87" },
+      { "id": "a08", "type": "measure", "surface": "18.6年", "canonical": "YEARS(18.6)", "context": "企业年龄的均值为18.6年" },
+      { "id": "a09", "type": "coefficient", "surface": "β=0.42（p<0.01）", "canonical": "COEF(β,0.42,p<0.01)", "context": "回归系数为β=0.42（p<0.01）" },
+      { "id": "a10", "type": "measure", "surface": "R²为0.61", "canonical": "R2(0.61)", "context": "模型R²为0.61" },
+      { "id": "a11", "type": "percent", "surface": "34.5%", "canonical": "PCT(34.5)", "equivalence": ["0.345", "百分之34.5"], "context": "中介效应占总效应的比例为34.5%" },
+      { "id": "a12", "type": "coefficient", "surface": "0.38（p<0.05）", "canonical": "COEF(β,0.38,p<0.05)", "context": "替换供应链韧性测度后，回归系数为0.38（p<0.05）" },
+      { "id": "a13", "type": "coefficient", "surface": "-0.02", "canonical": "COEF(企业年龄,-0.02,p<0.01)", "context": "企业年龄的系数为-0.02，且在1%水平上显著" },
+      { "id": "a14", "type": "count", "surface": "n=152", "canonical": "COUNT(152,子样本)", "equivalence": ["子样本152家"], "context": "子样本（n=152）的回归结果依然稳健" },
+      { "id": "a15", "type": "citation", "surface": "[12]", "canonical": "CITE(12)", "context": "Chen & Zhao（2023）[12]基于跨国数据的发现相一致" },
+      { "id": "a16", "type": "doi", "surface": "10.0000/demo.2023.041", "canonical": "DOI(10.0000/demo.2023.041)", "context": "（DOI: 10.0000/demo.2023.041）" },
+      { "id": "a17", "type": "url", "surface": "https://example.org/deploy-2024/data", "canonical": "URL(https://example.org/deploy-2024/data)", "context": "相关数据与代码见https://example.org/deploy-2024/data" }
+    ],
+    "terms": ["数字化转型", "供应链韧性", "DTI", "SCR", "供应网络多元化", "中介效应", "固定效应", "H1", "H2"],
+    "citations": { "numbered": ["[12]"], "author_year": ["Chen & Zhao（2023）"], "require_same_count": true },
+    "claims": [
+      { "id": "c1", "kind": "finding", "strength": "strong", "text": "数字化转型显著提升了供应链韧性", "atoms": ["a09", "a10"] },
+      { "id": "c2", "kind": "causal", "strength": "moderate", "text": "供应网络多元化在数字化转型影响供应链韧性中发挥部分中介作用（占比34.5%）", "atoms": ["a11"] },
+      { "id": "c3", "kind": "conclusion", "strength": "strong", "text": "假设H1与H2均得到数据支持", "atoms": ["a09", "a12"] },
+      { "id": "c4", "kind": "attribution", "strength": "neutral", "text": "本文结果与Chen & Zhao（2023）基于跨国数据的发现相一致", "atoms": ["a15", "a16"] }
+    ],
+    "frozen_regions": [
+      { "id": "t1", "kind": "table", "locator": "表1 基准回归结果（节选）", "check": "cell_value_sequence" }
+    ],
+    "structure": {
+      "headings": ["## 4 实证结果", "### 4.1 描述性统计", "### 4.2 基准回归与稳健性检验"],
+      "heading_change": "forbidden",
+      "paragraphs": 2,
+      "paragraph_tolerance": 1
+    }
+  },
+  "anti_patterns": [
+    { "kind": "banned_phrase", "items": ["值得注意的是", "综上所述", "进一步的"], "max_count": 0 },
+    { "kind": "banned_chain", "items": ["首先…其次…最后"], "max_count": 0 },
+    { "kind": "phrase_repetition", "items": ["从表1可以看出"], "max_count": 1 },
+    { "kind": "forbidden_behavior", "items": [
+      "修改表1任何单元格值",
+      "新增输入中不存在的任何数值",
+      "改变任何 p 值阈值、系数符号或精度（含表内 *** 星级）",
+      "改变 H1/H2 的支持结论或中介机制结论",
+      "删改引用 [12]、DOI 或数据链接"
+    ] }
+  ],
+  "evaluation_criteria": {
+    "dimensions": ["semantic_fidelity", "factual_fidelity", "citation_fidelity", "structural_fidelity", "naturalness", "academic_style"],
+    "hard_fail_overrides": [],
+    "thresholds_ref": "../../gates.json#variant_thresholds.A",
+    "judge": { "double_side_scoring": true, "claims_ledger": "must_preserve.claims" }
+  }
+}

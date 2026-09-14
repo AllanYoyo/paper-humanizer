@@ -1,0 +1,10 @@
+{
+  "case_id": "zh-results-B",
+  "language": "zh",
+  "section": "results",
+  "variant": "B",
+  "study": "DEPLOY-2024",
+  "author_profile": "authors/author-001",
+  "status": "draft",
+  "design_ref": "../CASES.md#zh-results-B"
+}
