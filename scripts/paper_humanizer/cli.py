@@ -125,9 +125,16 @@ def main(argv: list[str] | None = None) -> int:
     p_val.add_argument("revised")
     p_rev = sub.add_parser("review", help="review the document, or its <stem>.humanized.md revision if present")
     p_rev.add_argument("input")
+    p_web = sub.add_parser("web", help="start the local browser interface")
+    p_web.add_argument("--host", default="127.0.0.1")
+    p_web.add_argument("--port", type=int, default=8080)
     args = parser.parse_args(argv)
 
     try:
+        if args.command == "web":
+            from paper_humanizer.web import serve
+            serve(args.host, args.port)
+            return 0
         if args.command == "diagnose":
             return _cmd_diagnose(Path(args.input))
         if args.command == "rewrite":

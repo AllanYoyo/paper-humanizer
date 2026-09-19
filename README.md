@@ -50,6 +50,25 @@ Agent 场景（Hermes 等）无需 API key：agent 本身执行 LLM 步骤，见
 在输入旁放 `<stem>.glossary.txt`（如 `paper.glossary.txt`），每行一个术语，`#` 注释。
 glossary 术语进入语义锁，改写中同义替换会被判 `term_drift`。
 
+## 本地网页
+
+v0.1 提供一个零前端构建、仅使用 Python 标准库的本地网页入口：
+
+```bash
+paper-humanizer web
+# 或：paper-humanizer web --host 127.0.0.1 --port 8080
+```
+
+浏览器打开 [http://127.0.0.1:8080/](http://127.0.0.1:8080/)。网页支持诊断、质量评审、离线验证和后台改写任务；改写仍从服务端环境变量读取 LLM provider，浏览器不会接触 API key。
+
+远程 VPS 推荐用 SSH 隧道访问，不要直接绑定公网地址：
+
+```bash
+ssh -L 8080:127.0.0.1:8080 user@your-vps
+```
+
+然后在本机浏览器打开 `http://127.0.0.1:8080/`。网页第一版是本机/可信用户界面，不包含账号、认证、CSRF、速率限制或持久化任务数据库，不建议直接公网暴露。
+
 ## 测试
 
 ```bash

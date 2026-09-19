@@ -17,9 +17,8 @@ description: >
 
 ## Activation
 
-1. 确认用户是论文作者或合著者；拒绝为他人稿件做隐蔽改写、拒绝"降低检测器分数"类请求。
-2. 输入支持 markdown / 纯文本。表格、公式/代码块、参考文献表为冻结区域，永不改写。
-3. 语言自动检测（zh/en），两套 markers 独立统计。
+1. 输入支持 markdown / 纯文本。表格、公式/代码块、参考文献表为冻结区域，永不改写。
+2. 语言自动检测（zh/en），两套 markers 独立统计。
 
 ## Workflow
 
@@ -89,4 +88,16 @@ section-conventions.md, rewrite-techniques.md, lock-guide.md
 prompts/: diagnosis.prompt.md, semantic-lock.prompt.md, rewrite.prompt.md, review.prompt.md
 templates/: report.md
 scripts/: paper_humanizer/{__init__,__main__,errors,paths,normalize,extract,segment,
-lock,stats,validate,provider,prompts_loader,diagnose,review,pipeline,report,cli}.py
+lock,stats,validate,provider,prompts_loader,diagnose,review,pipeline,report,cli,web}.py
+web/: index.html, style.css, app.js
+
+## Optional local web entry
+
+The web page is a local convenience interface, not a replacement for agent-mode:
+
+```bash
+paper-humanizer web --host 127.0.0.1 --port 8080
+```
+
+It keeps the same deterministic validation and fail-safe rollback rules. Do not bind it publicly without adding authentication, CSRF protection, rate limiting and TLS. For a remote VPS, prefer an SSH tunnel:
+`ssh -L 8080:127.0.0.1:8080 user@vps`.

@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>paper-humanizer</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <main class="shell">
+    <header class="hero">
+      <div>
+        <p class="eyebrow">ACADEMIC EDITING</p>
+        <h1>paper-humanizer</h1>
+        <p>自然化学术表达，先锁定语义，再检查每个数字、引用和术语。</p>
+      </div>
+      <span class="badge">LOCAL FIRST</span>
+    </header>
+
+    <section class="card input-card">
+      <div class="section-title"><h2>论文输入</h2><span id="charCount">0 字符</span></div>
+      <div class="file-row">
+        <label class="file-button">选择 .md / .txt<input id="fileInput" type="file" accept=".md,.markdown,.txt,text/plain,text/markdown"></label>
+        <span id="fileName">也可以直接粘贴文本</span>
+      </div>
+      <textarea id="paperText" placeholder="将论文段落粘贴到这里……"></textarea>
+      <div class="actions">
+        <button id="diagnoseBtn" class="secondary">诊断 AI 写作痕迹</button>
+        <button id="reviewBtn" class="secondary">质量评审</button>
+        <button id="rewriteBtn" class="primary">开始自然化改写</button>
+      </div>
+      <p id="message" class="message"></p>
+    </section>
+
+    <section class="grid">
+      <article class="card">
+        <div class="section-title"><h2>诊断结果</h2><span id="diagnosisLevel" class="status neutral">未运行</span></div>
+        <pre id="diagnosisOutput" class="output muted">尚未运行诊断。</pre>
+      </article>
+      <article class="card">
+        <div class="section-title"><h2>改写状态</h2><span id="jobStatus" class="status neutral">空闲</span></div>
+        <div id="rewriteSummary" class="output muted">改写任务将在后台执行，确定性验证失败时会自动回滚原文。</div>
+      </article>
+    </section>
+
+    <section class="card result-card">
+      <div class="section-title"><h2>验证与输出</h2><span id="preservedRate" class="status neutral">—</span></div>
+      <div id="violations" class="violations muted">暂无验证结果。</div>
+      <div class="tabs">
+        <button class="tab active" data-target="finalOutput">最终文本</button>
+        <button class="tab" data-target="reportOutput">审计报告</button>
+      </div>
+      <pre id="finalOutput" class="output large"></pre>
+      <pre id="reportOutput" class="output large hidden"></pre>
+    </section>
+  </main>
+  <script src="/static/app.js"></script>
+</body>
+</html>
